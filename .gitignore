@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+
+# Data
+raw_data/
+cleaned_data/
+
+# Airflow
+airflow.db
+logs/
+
+# DBT
+target/
+dbt_modules/
+logs/
+
+# Environment
+.env
