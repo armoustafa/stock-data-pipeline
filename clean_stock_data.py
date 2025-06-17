@@ -16,16 +16,6 @@ for ticker in tickers:
     try:
         df = pd.read_csv(input_path)
         
-        # Verify required columns
-        required_columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Volume']
-        if not all(col in df.columns for col in required_columns):
-            raise ValueError(f"Missing required columns in {ticker} data: {df.columns}")
-        
-        # Check for Adj Close; use Close if not present
-        if 'Adj Close' not in df.columns:
-            print(f"Warning: 'Adj Close' column not found for {ticker}, using Close")
-            df['Adj Close'] = df['Close']
-        
         # Standardize date format to YYYY-MM-DD, handling time zones
         df['Date'] = pd.to_datetime(df['Date'], utc=True).dt.strftime('%Y-%m-%d')
         
@@ -34,15 +24,10 @@ for ticker in tickers:
         df['High'] = df['High'].ffill()
         df['Low'] = df['Low'].ffill()
         df['Close'] = df['Close'].ffill()
-        df['Adj Close'] = df['Adj Close'].ffill()
         df['Volume'] = df['Volume'].fillna(0)
         
         # Add ticker column
         df['Ticker'] = ticker
-        
-        # Drop unnecessary columns (Dividends, Stock Splits)
-        columns_to_keep = ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume', 'Ticker']
-        df = df[columns_to_keep]
         
         # Save cleaned data
         output_path = f'{cleaned_dir}/{ticker}_daily_cleaned.csv'
