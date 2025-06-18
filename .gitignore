@@ -22,3 +22,6 @@ logs/
 # Environment
 .env
 .DS_Store
+dbt_stock_pipeline/target/
+dbt_stock_pipeline/dbt_packages/
+dbt_stock_pipeline/logs/
