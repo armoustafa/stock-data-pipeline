@@ -6,7 +6,7 @@ import os
 # Define top 10 tickers
 tickers = ['AAPL', 'MSFT', 'AMZN', 'GOOGL', 'META', 'TSLA', 'NVDA', 'JPM', 'WMT', 'V']
 end_date = datetime.today()
-start_date = end_date - timedelta(days=365 * 5)  # 5 years of data
+start_date = end_date - timedelta(days=365 * 5)  
 
 # Create directory for raw data (already created, but ensure it exists)
 os.makedirs('raw_data', exist_ok=True)
