@@ -26,7 +26,7 @@ for ticker in tickers:
         df['Close'] = df['Close'].ffill()
         df['Volume'] = df['Volume'].fillna(0)
         
-        # Add ticker column
+        # Add ticker column for later merge
         df['Ticker'] = ticker
         
         # Save cleaned data
