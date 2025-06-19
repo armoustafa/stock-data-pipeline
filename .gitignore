@@ -25,3 +25,7 @@ logs/
 dbt_stock_pipeline/target/
 dbt_stock_pipeline/dbt_packages/
 dbt_stock_pipeline/logs/
+
+airflow/airflow.db
+airflow/logs/
+airflow/webserver_config.py

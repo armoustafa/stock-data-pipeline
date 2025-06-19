@@ -35,29 +35,31 @@ CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
 TRUNCATE TABLE {TABLE_NAME};
 """
 
-# Initialize connection
-conn = psycopg2.connect(**DB_CONFIG)
-cur = conn.cursor()
+def main():
+    """Wrapper for Airflow: loads cleaned data to Postgres using the script's logic."""
+    # Initialize connection
+    conn = psycopg2.connect(**DB_CONFIG)
+    cur = conn.cursor()
 
-# Create and clear table
-cur.execute(CREATE_TABLE_SQL)
-conn.commit()
-print(f"Table '{TABLE_NAME}' ready.")
-
-# Load each CSV
-for ticker in TICKERS:
-    print(f"Loading {ticker}...")
-    df = pd.read_csv(f'{DATA_DIR}/{ticker}_daily_cleaned.csv')
-    df = df[['Date', 'Ticker', 'Open', 'High', 'Low', 'Close', 'Volume']]
-    df.columns = ['date', 'ticker', 'open', 'high', 'low', 'close', 'volume']
-    output = StringIO()
-    df.to_csv(output, sep='\t', header=False, index=False)
-    output.seek(0)
-    cur.copy_from(output, TABLE_NAME, sep='\t', columns=df.columns)
+    # Create and clear table
+    cur.execute(CREATE_TABLE_SQL)
     conn.commit()
-    print(f"Loaded {ticker} ({len(df)} rows)")
+    print(f"Table '{TABLE_NAME}' ready.")
 
-# Cleanup
-cur.close()
-conn.close()
-print("Data loading complete!")
+    # Load each CSV
+    for ticker in TICKERS:
+        print(f"Loading {ticker}...")
+        df = pd.read_csv(f'{DATA_DIR}/{ticker}_daily_cleaned.csv')
+        df = df[['Date', 'Ticker', 'Open', 'High', 'Low', 'Close', 'Volume']]
+        df.columns = ['date', 'ticker', 'open', 'high', 'low', 'close', 'volume']
+        output = StringIO()
+        df.to_csv(output, sep='\t', header=False, index=False)
+        output.seek(0)
+        cur.copy_from(output, TABLE_NAME, sep='\t', columns=df.columns)
+        conn.commit()
+        print(f"Loaded {ticker} ({len(df)} rows)")
+
+    # Cleanup
+    cur.close()
+    conn.close()
+    print("Data loading complete!")
