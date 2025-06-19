@@ -29,3 +29,5 @@ dbt_stock_pipeline/logs/
 airflow/airflow.db
 airflow/logs/
 airflow/webserver_config.py
+airflow/airflow-webserver.pid
+airflow/airflow.cfg
