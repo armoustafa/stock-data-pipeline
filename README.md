@@ -1,6 +1,21 @@
 # Stock Data Pipeline
 
-This project is an end-to-end data pipeline for ingesting, cleaning, storing, transforming, and analyzing daily stock price data using Python, Airflow, dbt, and PostgreSQL.
+This project is an end-to-end, reproducible data pipeline for collecting, cleaning, storing, transforming, and analyzing daily stock price data. It leverages Python scripts, Apache Airflow for orchestration, dbt for analytics engineering, and PostgreSQL as the data warehouse. The pipeline is modular, extensible, and designed for both learning and production use cases.
+
+## What Does This Project Do?
+
+- **Automates the full lifecycle of stock data analytics:**
+  - Fetches daily historical stock prices for the top 10 US tickers from Yahoo Finance.
+  - Cleans and standardizes the data for consistency and reliability.
+  - Loads the cleaned data into a PostgreSQL database for centralized storage.
+  - Uses dbt to transform raw data into analytics-ready tables, including moving averages, volatility, and monthly summaries.
+  - Orchestrates the entire process with Airflow, enabling scheduled, hands-off operation.
+
+- **Promotes best practices:**
+  - Modular code and clear separation of concerns.
+  - Environment variable management for credentials.
+  - Automated testing and data quality checks with dbt.
+  - Easily extensible to more tickers, new data sources, or additional analytics.
 
 ## Project Overview
 
