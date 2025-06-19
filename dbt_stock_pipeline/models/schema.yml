@@ -1,0 +1,88 @@
+version: 2
+
+sources:
+  - name: stock_source
+    description: "Raw stock data loaded from Postgres"
+    schema: public
+    tables:
+      - name: raw_stock_data
+        description: "Raw daily stock prices loaded by ETL script"
+
+models:
+  - name: stg_stock_prices
+    description: "Staged stock price data from raw_stock_data"
+    columns:
+      - name: date
+        description: "Date of the stock price"
+        tests:
+          - not_null
+      - name: ticker
+        description: "Stock ticker symbol"
+        tests:
+          - not_null
+      - name: open
+        description: "Opening price"
+      - name: high
+        description: "Highest price"
+      - name: low
+        description: "Lowest price"
+      - name: close
+        description: "Closing price"
+        tests:
+          - not_null
+      - name: volume
+        description: "Trading volume"
+
+  - name: fact_stock_prices
+    description: "Daily stock prices with 30-day moving average"
+    columns:
+      - name: date
+        tests: [not_null]
+      - name: ticker
+        tests: [not_null]
+      - name: open
+      - name: high
+      - name: low
+      - name: close
+        tests: [not_null]
+      - name: volume
+      - name: moving_avg_30d
+        description: "30-day moving average of closing price"
+
+  - name: fact_price_volume
+    description: "Price and volume analysis with moving averages and volatility"
+    columns:
+      - name: date
+        tests: [not_null]
+      - name: ticker
+        tests: [not_null]
+      - name: open
+      - name: high
+      - name: low
+      - name: close
+        tests: [not_null]
+      - name: volume
+      - name: moving_avg_30d
+        description: "30-day moving average of closing price"
+      - name: moving_avg_7d
+        description: "7-day moving average of closing price"
+      - name: volatility_30d
+        description: "30-day volatility (standard deviation)"
+      - name: daily_pct_change
+        description: "Daily percentage change in closing price"
+
+  - name: fact_monthly_summary
+    description: "Monthly aggregated stock metrics"
+    columns:
+      - name: month
+        tests: [not_null]
+      - name: ticker
+        tests: [not_null]
+      - name: avg_open
+        description: "Average opening price per month"
+      - name: avg_close
+        description: "Average closing price per month"
+      - name: total_volume
+        description: "Total trading volume per month"
+      - name: green_days
+        description: "Number of days where close > open"
